@@ -1,0 +1,27 @@
+name: Deploy to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+      
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: AKIAVXBKXSUCRBZTTY4R
+        aws_secret_key: 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
+        application_name: MindLab_ChatBot
+        environment_name: MindLabChatBot-env
+        version_label: v1.0
+        region: us-east-1
+        deployment_package: deploy.zip
